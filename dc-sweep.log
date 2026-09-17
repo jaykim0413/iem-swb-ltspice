@@ -1,0 +1,12 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\dc-sweep.cir
+Start Time: Wed Sep 16 02:53:27 2026
+
+.step rc=0
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Total elapsed time: 0.000 seconds.
+R2: Resistance must not be zero.
