@@ -1,0 +1,30 @@
+* Test 1 wheel supply - Step 1 hotplug undamped
+* Plan: ltspice-testing/qd_supply_hotplug_fault_test_plan.md step 1
+*       (same test as wheel_3v3_supply_test_plan.md step 7)
+* Live Dash 3.3 V plugged onto the wheel bulk cap through the QD harness.
+* Record per step: Vpk = peak wheel VCC, Ipk = peak inrush through the QD.
+* Pass: Vpk well below 6.5 V (TXE8124-Q1 absolute max).
+*       ngspice reference: 6.15 V worst case at Lhar=5u, Rhar=0.05.
+* Placeholders: harness L and R (not measured), 10 uF ceramic, 5 mOhm ESR.
+* Harness modelled on the supply conductor only; the GND return is ideal.
+* ngspice reference (2026-09-28): Vpk 3.84-6.15 V across the 9 harness corners; worst
+*   6.15 V at 5u/0.05 (FAIL margin).
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+.param Cbulk=10u
+.param ESR=5m
+Vfeed src 0 3.3
+S1 src a ctl 0 SWq
+.model SWq SW(Ron=10m Roff=100Meg Vt=0.5 Vh=0)
+Vctl ctl 0 PULSE(0 1 1m 1n 1n 1 2)
+Lh a b {Lhar}
+Rh b c {Rhar}
+Cin c d {Cbulk}
+Resr d 0 {ESR}
+Cdec c 0 100n
+Rload c 0 1k
+.step param Lhar list 1u 2u 5u
+.step param Rhar list 0.05 0.1 0.3
+.tran 1u 5m 0 0.1u uic
+.meas TRAN Vpk MAX V(c)
+.meas TRAN Ipk MAX I(Lh)
+.end

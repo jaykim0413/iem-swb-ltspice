@@ -1,0 +1,28 @@
+* Test 1 wheel supply - Step 2 hotplug with contact bounce
+* Plan: ltspice-testing/qd_supply_hotplug_fault_test_plan.md step 2
+* Same as step 1, but the QD contact makes, breaks and re-makes three times
+* over ~150 us while mating, at intervals comparable to the ring period.
+* Record per step: Vpk and Ipk. Compare with step 1: does bouncing push Vpk higher?
+* Pass: Vpk well below 6.5 V.
+* ngspice reference (2026-09-28): identical to step 1. The first closure onto an empty
+*   cap is the worst case; re-closures ring around 3.3 V from a partly charged cap and
+*   cannot exceed it.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+.param Cbulk=10u
+.param ESR=5m
+Vfeed src 0 3.3
+S1 src a ctl 0 SWq
+.model SWq SW(Ron=10m Roff=100Meg Vt=0.5 Vh=0)
+Vctl ctl 0 PWL(0 0 1m 0 1.000001m 1 1.03m 1 1.030001m 0 1.06m 0 1.060001m 1 1.1m 1 1.100001m 0 1.15m 0 1.150001m 1 5m 1)
+Lh a b {Lhar}
+Rh b c {Rhar}
+Cin c d {Cbulk}
+Resr d 0 {ESR}
+Cdec c 0 100n
+Rload c 0 1k
+.step param Lhar list 1u 2u 5u
+.step param Rhar list 0.05 0.1 0.3
+.tran 1u 5m 0 0.1u uic
+.meas TRAN Vpk MAX V(c)
+.meas TRAN Ipk MAX I(Lh)
+.end

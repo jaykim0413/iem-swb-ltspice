@@ -1,0 +1,29 @@
+* Test 1 wheel supply - Step 4 LED load step
+* Plan: ltspice-testing/wheel_3v3_supply_test_plan.md step 4
+* Dash 3.3 V sent across the QD (supply and GND return both modelled).
+* All button + indicator LEDs (100 mA) switch on at 5 ms and off at 10 ms.
+* Record per step: Vw_min = lowest wheel VCC (measured wheel-VCC to wheel-GND),
+*                  Gnd_off = highest wheel-GND rise above Dash GND.
+* Pass: Vw_min well above the brownout region (stay near 3.3 V, >> 1.65 V);
+*       Gnd_off small next to the 0.99 V / 2.31 V SPI thresholds.
+*       ngspice reference at 10 uF: Vw_min ~3.24 V, Gnd_off ~31 mV.
+* ngspice reference (2026-09-28): Vw_min 3.24 V / Gnd_off 31 mV at 10 uF; 3.28 V / 10 mV
+*   at 330 uF.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+V33 dash 0 3.3
+Rh dash a 0.1
+Lh a vw 2u
+Cw1 vw e {Cbulk}
+Resr e gw 5m
+Cw2 vw gw 100n
+Ichips vw gw 1m
+Iled vw gw PULSE(0 100m 5m 10u 10u 5m 20m)
+Lg gw b 2u
+* Ediff reports wheel VCC measured against wheel GND (same as V(vw,gw))
+Ediff vd 0 vw gw 1
+Rg b 0 0.1
+.step param Cbulk list 10u 330u
+.tran 10u 40m 0 1u
+.meas TRAN Vw_min MIN V(vd)
+.meas TRAN Gnd_off MAX V(gw)
+.end

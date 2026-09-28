@@ -1,0 +1,39 @@
+* Test 1 wheel supply - Step 3 damping options
+* Plan: ltspice-testing/qd_supply_hotplug_fault_test_plan.md step 3 and section 5.1
+* Worst-case harness from step 1 (5 uH, 0.05 Ohm). Steps the bulk cap size,
+* its ESR, and a series damping resistor at the wheel input.
+* A 100 mA LED load switches on at 6 ms to show the cost of the damping resistor.
+* Record per step: Vpk, Ipk (inrush through QD), Vled (wheel VCC with LEDs lit).
+* Pass: Vpk safely under 6.5 V, Ipk within the QD contact rating (not yet known),
+*       Vled drop negligible (< ~50 mV).
+* Warning: 330 uF fixes Vpk but pushes 13-19 A through the QD with an ideal source.
+*          Step 6 tests whether the Dash current limiter fixes that.
+* Optional TVS at the input: uncomment the two lines marked TVS.
+* ngspice reference (2026-09-28): 0.5 Ohm damping takes 10 uF from 6.15 V to 4.13 V
+*   (costs 52 mV with LEDs lit). 330 uF + 0.5 Ohm gives 3.30 V but still 3.6-5.2 A inrush;
+*   330 uF undamped gives 15-19 A.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+.param Lhar=5u
+.param Rhar=0.05
+Vfeed src 0 3.3
+S1 src a ctl 0 SWq
+.model SWq SW(Ron=10m Roff=100Meg Vt=0.5 Vh=0)
+Vctl ctl 0 PULSE(0 1 1m 1n 1n 1 2)
+Lh a b {Lhar}
+Rh b b2 {Rhar}
+Rd b2 c {Rdamp}
+Cin c d {Cbulk}
+Resr d 0 {ESR}
+Cdec c 0 100n
+Rload c 0 1k
+Iled c 0 PULSE(0 100m 6m 10u 10u 10 20)
+* TVS: Dtvs 0 c TVSin
+* TVS: .model TVSin D(Is=1e-12 BV=5 IBV=1m Rs=0.2 Cjo=100p)
+.step param Cbulk list 10u 330u
+.step param ESR list 5m 50m 0.3
+.step param Rdamp list 1m 0.5
+.tran 1u 10m 0 0.1u uic
+.meas TRAN Vpk MAX V(c)
+.meas TRAN Ipk MAX I(Lh)
+.meas TRAN Vled FIND V(c) AT=9.5m
+.end

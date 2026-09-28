@@ -1,0 +1,44 @@
+* Test 1 wheel supply - Step 6 Dash current limiter as a soft-start
+* Plan: ltspice-testing/qd_supply_hotplug_fault_test_plan.md section 5.1 and step 4
+* Same hot-plug as step 1 (worst-case 5 uH / 0.05 Ohm harness), but the Dash 3.3 V
+* branch now has a current limiter. The limiter is a behavioral source that lets
+* up to Ipass extra amps through at the instant of connection, then clamps to Ilim
+* with time constant tau, standing in for a real eFuse's response time.
+* Record per step: Vpk (overshoot), Ipk (QD inrush), t_up (time wheel VCC reaches 3.0 V).
+* Pass: Vpk under 6.5 V with margin AND Ipk within the QD contact rating,
+*       with t_up short enough for startup (a few ms is fine).
+* The question this answers: how fast must the limiter engage against the
+* ~30 us ring period for a big bulk cap to be safe to hot-plug?
+* ngspice reference: a ~1 us limiter holds Vpk to 3.3-3.9 V and Ipk to ~1.6-1.9 A
+*   at BOTH 10 uF and 330 uF; a 10 us limiter barely helps (330 uF: ~7 A).
+* Replace B1 with the vendor eFuse model once a part is chosen.
+* ngspice reference (2026-09-28): ~1 us limiter: Vpk 3.3-3.9 V and Ipk 1.7-2.0 A at both
+*   10 uF and 330 uF. 10 us limiter: no help at 10 uF (6.09 V), ~7 A at 330 uF. 100 us:
+*   ~15 A.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+.param Ipass=20
+Vfeed src 0 3.3
+S1 src g ctl 0 SWq
+.model SWq SW(Ron=10m Roff=100Meg Vt=0.5 Vh=0)
+Vctl ctl 0 PULSE(0 1 1m 1n 1n 1 2)
+B1 g a I=min(max(V(g,a)/0.01,0), Ilim+Ipass*exp(-max(time-1m,0)/tau))
+Rb g a 1Meg
+* Limiter output: Schottky to GND and a little capacitance catch the harness
+* inductive kick when the limiter clamps. Real eFuse designs fit both.
+Dfw 0 a Dschottky
+.model Dschottky D(Is=1u Rs=0.05 N=1.05 Cjo=100p)
+Cq a 0 1n
+Lh a b 5u
+Rh b c 0.05
+Cin c d {Cbulk}
+Resr d 0 5m
+Cdec c 0 100n
+Rload c 0 1k
+.step param Ilim list 0.25 0.5 1
+.step param tau list 1u 10u 100u
+.step param Cbulk list 10u 330u
+.tran 1u 15m 0 0.1u uic
+.meas TRAN Vpk MAX V(c)
+.meas TRAN Ipk MAX I(Lh)
+.meas TRAN t_up WHEN V(c)=3.0 RISE=1
+.end

@@ -1,0 +1,32 @@
+* Test 1 wheel supply - Step 5 ride-through of a QD contact interruption
+* Plan: ltspice-testing/wheel_3v3_supply_test_plan.md step 6
+* The QD supply contact opens at 10 ms for Toff, then closes again.
+* Loads are resistors (3.3 V / Iload) so the rail stops drawing when it empties.
+* Record per step: Vw_min = lowest wheel VCC during the interruption.
+* Pass: Vw_min stays above 1.65 V (TXE8124-Q1 minimum VCC) for the interruption
+*       length you decide to tolerate. Below 1.35 V the chip may reset; between
+*       1.05 and 1.65 V it may lose configuration without a clean reset.
+* Expect: 10 uF rides through 1 ms only with LEDs off; ~333 uF needed with LEDs lit.
+* ngspice reference (2026-09-28): 1 ms at 100 mA: 0.16 V with 10 uF (collapse), 2.99 V
+*   with 330 uF. LEDs off: >3.2 V either way.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+V33 dash 0 3.3
+Sqd dash a ctl 0 SWqd
+.model SWqd SW(Ron=0.05 Roff=100Meg Vt=1.65 Vh=0.1)
+Vctl ctl 0 PWL(0 3.3 10m 3.3 {10m+1u} 0 {10m+Toff} 0 {10m+Toff+1u} 3.3 40m 3.3)
+Rh a a2 0.1
+Lh a2 vw 2u
+Cw1 vw e {Cbulk}
+Resr e gw 5m
+Cw2 vw gw 100n
+Rload vw gw {3.3/Iload}
+Lg gw b 2u
+* Ediff reports wheel VCC measured against wheel GND (same as V(vw,gw))
+Ediff vd 0 vw gw 1
+Rg b 0 0.1
+.step param Iload list 1m 100m
+.step param Cbulk list 10u 330u
+.step param Toff list 100u 1m
+.tran 10u 40m 0 1u
+.meas TRAN Vw_min MIN V(vd)
+.end
