@@ -1,0 +1,12 @@
+* SWB rotary line - step 4: single clean contact closure, edge timing
+V1 VCC 0 3.3
+R1 VCC IN {Rpu}
+C1 IN 0 8.5p
+S1 IN 0 CTRL 0 SWmodel
+.model SWmodel SW(Ron=0.1 Roff=1Meg Vt=1.65 Vh=0.1)
+Vctrl CTRL 0 PULSE(0 3.3 1m 1u 1u 5m 10m)
+.step param Rpu list 70k 100k 140k
+.tran 0 10m 0 10n
+.meas TRAN t_fall TRIG V(IN)=2.31 FALL=1 TARG V(IN)=0.99 FALL=1
+.meas TRAN t_rise TRIG V(IN)=0.99 RISE=1 TARG V(IN)=2.31 RISE=1
+.end
