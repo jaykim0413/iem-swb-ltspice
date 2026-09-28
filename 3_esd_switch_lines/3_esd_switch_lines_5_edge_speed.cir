@@ -1,0 +1,27 @@
+* Test 3 ESD on switch lines - Step 5 edge speed with protection fitted
+* Plan: ltspice-testing/esd_protection_test_plan.md step 5
+* Rotary/button line with the pin capacitance (8.5 pF), the TVS capacitance and
+* the series resistor. The contact closes at 10 us and opens at 60 us.
+* Record per step: t_fall (closing, 2.31 -> 0.99 V) and t_rise (release,
+*   0.99 -> 2.31 V) at the pin.
+* Pass: both far below the 20-50 ms poll interval (expect microseconds).
+*   Without protection at 100k: fall ~4 ns, rise ~830 ns (rotary plan step 4).
+* ngspice reference (2026-09-28): worst case 7.0 us rise (140k, 50 pF) - thousands of
+*   times inside a 20 ms poll. Fall 7 ns with 1 kOhm.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+V1 VCC 0 3.3
+R1 VCC pin {Rpu}
+Cpin pin 0 8.5p
+Rs pin line {Rser}
+* TVS capacitance sits at the connector node, as in step 3
+Ctvs line 0 {Ctvs}
+S1 line 0 CTRL 0 SWmodel
+.model SWmodel SW(Ron=0.1 Roff=1G Vt=1.65 Vh=0.1)
+Vctrl CTRL 0 PULSE(0 3.3 10u 10n 10n 50u 200u)
+.step param Rpu list 70k 140k
+.step param Rser list 1m 1k
+.step param Ctvs list 1f 10p 50p
+.tran 10n 150u 0 2n
+.meas TRAN t_fall TRIG V(pin) VAL=2.31 FALL=1 TARG V(pin) VAL=0.99 FALL=1
+.meas TRAN t_rise TRIG V(pin) VAL=0.99 RISE=1 TARG V(pin) VAL=2.31 RISE=1
+.end

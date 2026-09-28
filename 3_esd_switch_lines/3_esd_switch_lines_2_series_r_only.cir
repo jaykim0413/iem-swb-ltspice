@@ -1,0 +1,44 @@
+* Test 3 ESD on switch lines - Step 2 series resistor only
+* Plan: ltspice-testing/esd_protection_test_plan.md step 2
+* Same discharge as step 1 with a series resistor between the connector and
+* the chip pin. Cheapest option.
+* Record per step: Vpin_max/min, internal clamp currents, and the peak voltage ACROSS the
+*   resistor (VR_max / VR_min). Kilovolts across a small resistor means arcing:
+*   it must be a pulse-rated part (the MAX22190 datasheet asked for >= 1 kOhm).
+* Pass (for this step alone): clamp current comes down meaningfully from step 1.
+*   A series R alone usually does not hold the pin under 6.5 V; step 3 adds a TVS.
+* ngspice reference (2026-09-28): 1 kOhm cuts internal clamp current to 6 A at +8 kV
+*   with 6 kV across the resistor - not enough on its own.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+.model Dclamp D(Is=1e-12 Rs=1)
+.model Dint D(Is=1e-12 BV=8 IBV=1m Rs=1)
+.model SWe SW(Ron=0.01 Roff=1e12 Vt=0.5 Vh=0)
+Cs hv 0 150p IC={Vesd}
+Sd hv x ctl 0 SWe
+Vctl ctl 0 PULSE(0 1 1n 0.1n 0.1n 1 2)
+Rd x line 330
+Rs line pin {Rser}
+* Er reports the voltage across the series resistor (same as V(line,pin))
+Er vr 0 line pin 1
+Cpin pin 0 8.5p
+* Chip pin model. P-port pins are IOFF-protected (datasheet: +-1 uA at 3.6 V with
+* VCC = 0), so there is NO clamp diode from the pin up to VCC. Positive strikes
+* go into an internal ESD clamp to GND (Dint, trigger ~8 V PLACEHOLDER - not
+* published); negative strikes go into the clamp diode to GND (Ddn).
+Vsu pin pu 0
+Dint 0 pu Dint
+Vsd nd pin 0
+Ddn 0 nd Dclamp
+Rpu VCC pin 100k
+Vcc VCC 0 3.3
+.ic V(pin)=3.3 V(line)=3.3
+.step param Rser list 100 1k
+.step param Vesd list 8k -8k
+.tran 10p 100n 0 50p uic
+.meas TRAN Vpin_max MAX V(pin)
+.meas TRAN Vpin_min MIN V(pin)
+.meas TRAN Iint_max MAX I(Vsu)
+.meas TRAN Idn_max MAX I(Vsd)
+.meas TRAN VR_max MAX V(vr)
+.meas TRAN VR_min MIN V(vr)
+.end

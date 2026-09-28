@@ -1,0 +1,43 @@
+* Test 3 ESD on switch lines - Step 1 baseline, no protection
+* Plan: ltspice-testing/esd_protection_test_plan.md step 1
+* Simplified IEC 61000-4-2 / ISO 10605 contact discharge (150 pF / 330 Ohm)
+* into a rotary or button line that runs straight to a TXE8124-Q1 P-port pin.
+* No series resistor (1 mOhm stand-in) and no TVS. This is the reference.
+* Record per step: Vpin_max / Vpin_min, and peak current into the chip's
+*   internal positive ESD clamp (Iint_max) and negative clamp diode (Idn_max).
+* Expect: large overshoot and amps of clamp current - the "do nothing" case.
+* Pin limits: -0.5 V to 6.5 V. Clamp current rating: +-20 mA (DC rating).
+* Dclamp / Dint are GENERIC; the chip's real clamp structure is not published.
+*   Treat magnitudes as indicative. The model reproduces the slow part of the
+*   IEC waveform well and the sub-ns first spike only roughly.
+* ngspice reference (2026-09-28): +8 kV: 32 V at the pin, 24 A into the internal clamp.
+*   -8 kV: -12.9 V, 12 A.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+.model Dclamp D(Is=1e-12 Rs=1)
+.model Dint D(Is=1e-12 BV=8 IBV=1m Rs=1)
+.model SWe SW(Ron=0.01 Roff=1e12 Vt=0.5 Vh=0)
+.param Rser=1m
+Cs hv 0 150p IC={Vesd}
+Sd hv x ctl 0 SWe
+Vctl ctl 0 PULSE(0 1 1n 0.1n 0.1n 1 2)
+Rd x line 330
+Rs line pin {Rser}
+Cpin pin 0 8.5p
+* Chip pin model. P-port pins are IOFF-protected (datasheet: +-1 uA at 3.6 V with
+* VCC = 0), so there is NO clamp diode from the pin up to VCC. Positive strikes
+* go into an internal ESD clamp to GND (Dint, trigger ~8 V PLACEHOLDER - not
+* published); negative strikes go into the clamp diode to GND (Ddn).
+Vsu pin pu 0
+Dint 0 pu Dint
+Vsd nd pin 0
+Ddn 0 nd Dclamp
+Rpu VCC pin 100k
+Vcc VCC 0 3.3
+.ic V(pin)=3.3 V(line)=3.3
+.step param Vesd list 2k 4k 8k -8k
+.tran 10p 100n 0 50p uic
+.meas TRAN Vpin_max MAX V(pin)
+.meas TRAN Vpin_min MIN V(pin)
+.meas TRAN Iint_max MAX I(Vsu)
+.meas TRAN Idn_max MAX I(Vsd)
+.end

@@ -1,0 +1,35 @@
+* Test 3 ESD on switch lines - Step 4 normal-operation side effects (leakage)
+* Plan: ltspice-testing/esd_protection_test_plan.md step 4
+* No ESD source. Two copies of a switch line with protection fitted:
+*   pressed line (pin)  - contact resistance swept 1 mOhm to 200 kOhm
+*   open line   (pino)  - knob on another detent, contact open
+* TVS leakage is modelled as a DC current Ileak from the connector node to GND
+*   (a generic diode model leaks ~pA, which hides the real problem).
+*   Use the chosen TVS's datasheet leakage at 3.3 V.
+* Record per step: R_margin (contact resistance where the pressed line reaches
+*   0.99 V) and V_high (open-line level).
+* Pass: V_high well above 2.31 V at the 140k corner, and R_margin loss vs. the
+*   unprotected 30.0 / 42.9 / 60.0 kOhm small.
+* Why it matters: with 70-140 kOhm pull-ups, every 1 uA of leakage costs
+*   0.07-0.14 V of HIGH level. 10 uA at 140k drops the open line to ~1.9 V - FAIL.
+* Read the .dc x-axis as ohms (Rc = volts on node ctl).
+* ngspice reference (2026-09-28): V_high at 140k: 3.30 / 3.16 / 1.90 V for 0 / 1 / 10
+*   uA. Rser 1k costs exactly 1 kOhm of margin. Leakage slightly RAISES R_margin (it helps
+*   pull the pressed line down) - the damage is all on the open line.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+V1 VCC 0 3.3
+Vsweep ctl 0 0
+R1 VCC pin {Rpu}
+Rs1 pin line {Rser}
+I1 line 0 {Ileak}
+Rc line 0 R={V(ctl)}
+R2 VCC pino {Rpu}
+Rs2 pino lineo {Rser}
+I2 lineo 0 {Ileak}
+.step param Rpu list 70k 100k 140k
+.step param Rser list 1m 1k
+.step param Ileak list 0 1u 10u
+.dc Vsweep 1m 200k 100
+.meas DC R_margin FIND V(ctl) WHEN V(pin)=0.99
+.meas DC V_high FIND V(pino) AT=1m
+.end
