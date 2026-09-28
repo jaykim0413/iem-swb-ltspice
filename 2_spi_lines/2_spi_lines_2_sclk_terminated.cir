@@ -1,0 +1,32 @@
+* Test 2 SPI lines - Step 2 SCLK source-terminated
+* Plan: ltspice-testing/spi_bus_integrity_test_plan.md step 2
+* Same as step 1 with a series resistor at the Dash driver. Rout + Rser should
+* roughly equal Z0. Z0 is unmeasured, so it is stepped across its likely range
+* at the longest harness delay (15 ns, ~3 m).
+* Record per step: Vmax/Vmin at both chips; look at the edge shape on the plot.
+* Pass: edge monotonic through 0.99-2.31 V at both chips, within -0.5 to 6.5 V.
+*   Pick the Rser that passes across all Z0 values, not just the nominal one.
+* Note: Rser here is the Dash-end resistor. Step 5 adds the wheel-end resistor
+*   that step 4 (back-power) asks for; choose the two together.
+* ngspice reference (2026-09-28): 120 Ohm passes at all three Z0; 90 Ohm marginal at
+*   Z0=150 (-0.45 V); 50 Ohm fails at Z0>=120. Err toward the high end of Z0.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+.param F=1Meg
+.param Tr=1n
+.param Rout=30
+.param Td=15n
+Vdrv drv 0 PULSE(0 3.3 0 {Tr} {Tr} {0.5/F-Tr} {1/F})
+Rdrv drv a {Rout}
+Rs a b {Rser}
+T1 b 0 c 0 Z0={Z0} Td={Td}
+Cpin1 c 0 8p
+Lstub c d 5n
+Cpin2 d 0 8p
+.step param Rser list 50 90 120
+.step param Z0 list 80 120 150
+.tran 1n {5/F} 0 {Tr/10}
+.meas TRAN Vmax_chip1 MAX V(c)
+.meas TRAN Vmin_chip1 MIN V(c)
+.meas TRAN Vmax_chip2 MAX V(d)
+.meas TRAN Vmin_chip2 MIN V(d)
+.end

@@ -1,0 +1,30 @@
+* Test 2 SPI lines - Step 3 MISO round-trip timing
+* Plan: ltspice-testing/spi_bus_integrity_test_plan.md step 4
+* The Dash launches an SCLK edge at t = 0. It takes Td to reach the wheel, the
+* TXE8124-Q1 answers after Tpd (27 ns max at 10 MHz), and MISO takes Td to come
+* back. The source delay Td+Tpd stands in for the outbound trip and the chip.
+* Record per step: t_hi / t_lo = time MISO at the Dash (node c) crosses 2.31 V
+*   rising / 0.99 V falling. That IS the round-trip time.
+* Pass: round trip < 0.5/F minus the Dash MCU's input setup time.
+*   At 10 MHz: 50 ns minus setup (~5 ns) -> about 45 ns.
+*   At 1 MHz there is ~495 ns, so any harness passes.
+* Set F to the clock you plan to use. Replace Cmcu with the MCU datasheet value.
+* ngspice reference (2026-09-28): round trip 38.5 / 48.5 / 58.5 ns for Td 5 / 10 / 15
+*   ns. 10 MHz only works under ~1 m of harness; 1 MHz works at any realistic length.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+.param F=10Meg
+.param Tr=2n
+.param Rout=40
+.param Z0=120
+.param Tpd=27n
+Vdrv drv 0 PULSE(0 3.3 {Td+Tpd} {Tr} {Tr} {0.5/F-Tr} {1/F})
+Rdrv drv a {Rout}
+Rs a b {Rser}
+T1 b 0 c 0 Z0={Z0} Td={Td}
+Cmcu c 0 5p
+.step param Td list 5n 10n 15n
+.step param Rser list 1m 80
+.tran 0.1n {3/F} 0 {Tr/10}
+.meas TRAN t_hi WHEN V(c)=2.31 RISE=1
+.meas TRAN t_lo WHEN V(c)=0.99 FALL=1
+.end

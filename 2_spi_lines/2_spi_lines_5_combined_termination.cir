@@ -1,0 +1,42 @@
+* Test 2 SPI lines - Step 5 Dash-end termination plus wheel-end series resistor
+* Plan: ltspice-testing/spi_bus_integrity_test_plan.md steps 2 and 4a together
+* Step 4 wants more series resistance to keep back-power clamp current under
+* 20 mA; step 2 wants Rout + Rsrc ~= Z0 at the Dash end. A resistor at the WHEEL
+* end adds to the back-power limit without spoiling source termination. This
+* step checks what the wheel-end resistor does to the edge the chips receive.
+* Chip pins include clamp diodes to a powered wheel rail.
+* Record per step: t_rise at chip 2 (10-90 %), Vmax/Vmin at chip 2, peak clamp current.
+* Pass: edge monotonic, t_rise well under 10 % of the half period (50 ns at 1 MHz),
+*   within -0.5 to 6.5 V. Then check the total Rout+Rsrc+Rwheel against step 4
+*   (with the generic diode, ~20 mA needs roughly 135 Ohm total or more).
+* ngspice reference (2026-09-28): with Rsrc=90: Rwheel 100 -> 7.8 ns rise, 330 -> 15.8
+*   ns, 1k -> 39 ns, all clean. Rsrc 90 + Rwheel 100-330 also brings step-4 clamp current
+*   to ~6-12 mA.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+.model Dclamp D(Is=1e-12 Rs=1)
+.param F=1Meg
+.param Tr=1n
+.param Rout=30
+.param Z0=120
+.param Td=15n
+Vdrv drv 0 PULSE(0 3.3 0 {Tr} {Tr} {0.5/F-Tr} {1/F})
+Rdrv drv a {Rout}
+Rs a b {Rsrc}
+T1 b 0 c 0 Z0={Z0} Td={Td}
+Rw c w {Rwheel}
+Cpin1 w 0 8p
+Lstub w d 5n
+Cpin2 d 0 8p
+Vcl d dc 0
+Dup dc vccw Dclamp
+Ddn 0 dc Dclamp
+Vccw vccw 0 3.3
+.step param Rsrc list 1m 90
+.step param Rwheel list 1m 100 330 1k
+.tran 1n {5/F} 0 {Tr/10}
+.meas TRAN t_rise TRIG V(d) VAL=0.33 RISE=1 TARG V(d) VAL=2.97 RISE=1
+.meas TRAN Vmax_chip2 MAX V(d)
+.meas TRAN Vmin_chip2 MIN V(d)
+.meas TRAN Iclamp_max MAX I(Vcl)
+.meas TRAN Iclamp_min MIN I(Vcl)
+.end

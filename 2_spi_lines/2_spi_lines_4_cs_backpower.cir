@@ -1,0 +1,33 @@
+* Test 2 SPI lines - Step 4 back-power through CS on a part-mated QD
+* Plan: ltspice-testing/spi_bus_integrity_test_plan.md step 4a
+* GND and CS have mated, the wheel 3.3 V pin has not. The Dash holds CS high
+* (its idle state); the only path onward is the chip's input clamp diode into
+* the wheel rail. IOFF is claimed for P-port pins only, not the SPI pins.
+* Record per step: Ipk = peak clamp current, Vend = wheel VCC reached.
+* Pass: Ipk < 20 mA (datasheet input-output clamp rating) AND Vend < 1.35 V
+*   (POR release), or firmware / pin order makes the state impossible.
+*   ngspice reference: 85.5 mA with no resistor, 22 mA at 90 Ohm; the rail
+*   reaches 2.7-2.9 V either way -> the chips power up off CS.
+* Rser = total series resistance between the Dash pin and the chip pin
+*   (Dash-end termination + any wheel-end resistor).
+* Rload 330k = chips idle (~10 uA); 3.3k = ~1 mA with pull-up current flowing.
+* Dclamp is a GENERIC diode; TI does not publish the real clamp. Indicative only.
+* ngspice reference (2026-09-28): 85.5 mA none, 41.7 mA 33 Ohm, 22.2 mA 90 Ohm, 7.5 mA
+*   330 Ohm, 2.7 mA 1k; wheel rail 1.9-2.9 V in every case.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+.model Dclamp D(Is=1e-12 Rs=1)
+Vcs cs 0 3.3
+Rout cs a 30
+Rs a pin {Rser}
+Cpin pin 0 8p
+Vsense pin pd 0
+Dup pd vccw Dclamp
+Cw1 vccw 0 10u
+Cw2 vccw 0 100n
+Rload vccw 0 {Rload}
+.step param Rser list 1m 33 90 330 1k
+.step param Rload list 3.3k 330k
+.tran 10u 20m 0 1u uic
+.meas TRAN Ipk MAX I(Vsense)
+.meas TRAN Vend FIND V(vccw) AT=19m
+.end

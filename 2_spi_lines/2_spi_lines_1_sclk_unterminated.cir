@@ -1,0 +1,33 @@
+* Test 2 SPI lines - Step 1 SCLK unterminated
+* Plan: ltspice-testing/spi_bus_integrity_test_plan.md step 1
+* Dash MCU drives SCLK across the QD harness to two TXE8124-Q1 pins
+* (chip 1 at node c, chip 2 at node d via a short board stub). No termination.
+* Also valid for CS and MOSI, which have the same shape.
+* Record per step: Vmax/Vmin at both chips. On the plot, check whether any edge
+*   rings back across 0.99 V or 2.31 V (a double-clocked edge).
+* Pass: stays within -0.5 V to 6.5 V AND edges cross the threshold band once.
+*   ngspice reference (1 MHz, 120 Ohm, 10 ns): +5.9 V / -2.6 V -> FAIL, so
+*   termination is needed. Lossless line, no pin clamps = pessimistic case.
+* Placeholders: harness Z0 and delay (not measured), MCU edge 1 ns / 30 Ohm.
+* ngspice reference (2026-09-28): +5.9 V / -2.6 V at every harness length - FAIL,
+*   termination needed.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+.param F=1Meg
+.param Tr=1n
+.param Rout=30
+.param Z0=120
+.param Rser=1m
+Vdrv drv 0 PULSE(0 3.3 0 {Tr} {Tr} {0.5/F-Tr} {1/F})
+Rdrv drv a {Rout}
+Rs a b {Rser}
+T1 b 0 c 0 Z0={Z0} Td={Td}
+Cpin1 c 0 8p
+Lstub c d 5n
+Cpin2 d 0 8p
+.step param Td list 5n 10n 15n
+.tran 1n {5/F} 0 {Tr/10}
+.meas TRAN Vmax_chip1 MAX V(c)
+.meas TRAN Vmin_chip1 MIN V(c)
+.meas TRAN Vmax_chip2 MAX V(d)
+.meas TRAN Vmin_chip2 MIN V(d)
+.end
