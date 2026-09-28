@@ -1,0 +1,39 @@
+* Test 4 wheel short - Step 2 recovery after the short clears
+* Plan: ltspice-testing/qd_supply_hotplug_fault_test_plan.md step 5
+* Same circuit as step 1. The short clears at 30 ms; drivers re-mate right away.
+* Record per step: Vrec_max (any overshoot on wheel VCC after the short clears),
+*   t_rec (absolute time wheel VCC is back above 3.0 V; subtract 30 ms),
+*   Vdash_min_rec (Dash rail while the wheel bulk cap recharges).
+* Pass: no overshoot toward 6.5 V, recovery within a few ms, Dash rail unaffected.
+* Note: SPICE cannot model a polyfuse's thermal trip; use an eFuse or current-
+*   limited switch model. The behavioral limiter here recovers instantly.
+* ngspice reference (2026-09-28): no overshoot above 3.62 V; wheel back above 3.0 V
+*   0.03-4 ms after the short clears.
+* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+Vreg reg 0 3.3
+Rsrc reg g 0.05
+Rdash g 0 33
+* Dash rail decoupling (placeholder)
+Cdash g 0 10u
+B1 g a I=min(max(V(g,a)/0.01,0),Ilim)
+Rb g a 1Meg
+* Limiter output Schottky and capacitance, as in test 1 step 6
+Dfw 0 a Dschottky
+.model Dschottky D(Is=1u Rs=0.05 N=1.05 Cjo=100p)
+Cq a 0 1n
+Lh a b 2u
+Rh b c 0.1
+Cin c e {Cbulk}
+Resr e 0 5m
+Rload c 0 1k
+Vss c s 0
+Ssh s 0 ctl 0 SWs
+.model SWs SW(Ron=10m Roff=100Meg Vt=0.5 Vh=0)
+Vctl ctl 0 PULSE(0 1 10m 1u 1u 20m 1)
+.step param Ilim list 0.25 0.5 1
+.step param Cbulk list 10u 330u
+.tran 10u 50m 0 1u uic
+.meas TRAN Vrec_max MAX V(c) FROM=30m TO=50m
+.meas TRAN t_rec WHEN V(c)=3.0 TD=30m RISE=1
+.meas TRAN Vdash_min_rec MIN V(g) FROM=30m TO=50m
+.end
