@@ -8,10 +8,13 @@
 * Record per step: t_rise at chip 2 (10-90 %), Vmax/Vmin at chip 2, peak clamp current.
 * Pass: edge monotonic, t_rise well under 10 % of the half period (50 ns at 1 MHz),
 *   within -0.5 to 6.5 V. Then check the total Rout+Rsrc+Rwheel against step 4
-*   (with the generic diode, ~20 mA needs roughly 135 Ohm total or more).
-* ngspice reference (2026-09-28): with Rsrc=90: Rwheel 100 -> 7.8 ns rise, 330 -> 15.8
-*   ns, 1k -> 39 ns, all clean. Rsrc 90 + Rwheel 100-330 also brings step-4 clamp current
-*   to ~6-12 mA.
+*   Step 4 in LTSpice: 100 Ohm alone gives 20.5 mA (over the limit); +100 Ohm at the
+*   wheel gives 11.7 mA; +330 Ohm gives 5.9 mA.
+* ngspice reference (updated 2026-09-29 to Rsrc = 100 Ohm, the value chosen in step 2):
+*   Rwheel 100 -> 9.4 ns rise, 330 -> 19.2 ns, 1k -> 43 ns (close to the 50 ns
+*   limit). All stay within 0-3.3 V with no clamp current. Without the Dash-end
+*   100 Ohm (Rsrc = 1m) every case undershoots past -0.5 V.
+*   => 100 Ohm at the Dash + 100-330 Ohm at the wheel meets steps 2, 4 and 5.
 * Checked in ngspice by expanding .step; not yet opened in LTSpice.
 .model Dclamp D(Is=1e-12 Rs=1)
 .param F=1Meg
@@ -31,7 +34,7 @@ Vcl d dc 0
 Dup dc vccw Dclamp
 Ddn 0 dc Dclamp
 Vccw vccw 0 3.3
-.step param Rsrc list 1m 90
+.step param Rsrc list 1m 100
 .step param Rwheel list 1m 100 330 1k
 .tran 1n {5/F} 0 {Tr/10}
 .meas TRAN t_rise TRIG V(d) VAL=0.33 RISE=1 TARG V(d) VAL=2.97 RISE=1

@@ -1,0 +1,92 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\2_spi_lines\5_combinted_termination\2_spi_lines_5_combined_termination.cir
+Start Time: Mon Sep 28 23:12:08 2026
+
+.step rsrc=0.001 rwheel=0.001
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration succeeded in finding operating point.
+
+.step rsrc=100 rwheel=0.001
+Direct Newton iteration succeeded in finding operating point.
+
+.step rsrc=0.001 rwheel=100
+Direct Newton iteration succeeded in finding operating point.
+
+.step rsrc=100 rwheel=100
+Direct Newton iteration succeeded in finding operating point.
+
+.step rsrc=0.001 rwheel=330
+Direct Newton iteration succeeded in finding operating point.
+
+.step rsrc=100 rwheel=330
+Direct Newton iteration succeeded in finding operating point.
+
+.step rsrc=0.001 rwheel=1000
+Direct Newton iteration succeeded in finding operating point.
+
+.step rsrc=100 rwheel=1000
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 5.396 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\2_spi_lines\5_combinted_termination\2_spi_lines_5_combined_termination.cir
+
+
+Measurement: t_rise
+  step	t_rise	FROM	TO
+     1	1.52303086427e-09	1.55936340293e-08	1.71166648936e-08
+     2	5.13311717415e-09	1.5714741442e-08	2.08478586162e-08
+     3	2.69038142244e-09	1.57259597529e-08	1.84163411753e-08
+     4	9.36934892862e-09	1.59031762495e-08	2.52725251781e-08
+     5	5.4812548562e-09	1.59779750798e-08	2.1459229936e-08
+     6	1.91676269933e-08	1.63098142882e-08	3.54774412815e-08
+     7	1.36631482043e-08	1.66580953163e-08	3.03212435207e-08
+     8	4.28695707946e-08	1.74652819315e-08	6.03348527261e-08
+
+Measurement: vmax_chip2
+  step	MAX(V(d))	FROM	TO
+     1	3.95452260971	0	5e-06
+     2	3.29999995232	0	5e-06
+     3	3.8968307972	0	5e-06
+     4	3.29999995232	0	5e-06
+     5	3.87218141556	0	5e-06
+     6	3.29999995232	0	5e-06
+     7	3.84378552437	0	5e-06
+     8	3.29999995232	0	5e-06
+
+Measurement: vmin_chip2
+  step	MIN(V(d))	FROM	TO
+     1	-0.65272963047	0	5e-06
+     2	5.59008617174e-10	0	5e-06
+     3	-0.596353709698	0	5e-06
+     4	9.89004322882e-10	0	5e-06
+     5	-0.572267651558	0	5e-06
+     6	1.97800420487e-09	0	5e-06
+     7	-0.543816447258	0	5e-06
+     8	4.85900386593e-09	0	5e-06
+
+Measurement: iclamp_max
+  step	MAX(I(Vcl))	FROM	TO
+     1	0.0302848182619	0	5e-06
+     2	4.30078195279e-12	0	5e-06
+     3	0.00777021283284	0	5e-06
+     4	4.30078195279e-12	0	5e-06
+     5	0.00353132048622	0	5e-06
+     6	4.30078195279e-12	0	5e-06
+     7	0.00128539337311	0	5e-06
+     8	4.30067093049e-12	0	5e-06
+
+Measurement: iclamp_min
+  step	MIN(I(Vcl))	FROM	TO
+     1	-0.0293274521828	0	5e-06
+     2	-4.30000002619e-12	0	5e-06
+     3	-0.00766135146841	0	5e-06
+     4	-4.30000002619e-12	0	5e-06
+     5	-0.00354164699093	0	5e-06
+     6	-4.30000002619e-12	0	5e-06
+     7	-0.00128686020616	0	5e-06
+     8	-4.29999959251e-12	0	5e-06
