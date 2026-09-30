@@ -9,11 +9,21 @@
 *   ngspice reference: 85.5 mA with no resistor, 22 mA at 90 Ohm; the rail
 *   reaches 2.7-2.9 V either way -> the chips power up off CS.
 * Rser = total series resistance between the Dash pin and the chip pin
-*   (Dash-end termination + any wheel-end resistor).
+*   (Dash-end termination + any wheel-end resistor). Updated 2026-09-29 to the
+*   design points: 100 = Dash-end termination only (step 2), 200 = + 100 Ohm at
+*   the wheel, 430 = + 330 Ohm at the wheel. 1m is the no-resistor reference.
+* Cbulk: 10 uF, or the ~330 uF that test 1 ride-through may call for.
+* t_wake: time after CS mates until the wheel rail crosses 1.35 V (POR release),
+*   i.e. how long until the chips start up off CS. Blank = never, in this run.
 * Rload 330k = chips idle (~10 uA); 3.3k = ~1 mA with pull-up current flowing.
 * Dclamp is a GENERIC diode; TI does not publish the real clamp. Indicative only.
-* ngspice reference (2026-09-28): 85.5 mA none, 41.7 mA 33 Ohm, 22.2 mA 90 Ohm, 7.5 mA
-*   330 Ohm, 2.7 mA 1k; wheel rail 1.9-2.9 V in every case.
+* LTSpice 26.0.2 run 2026-09-28 (earlier Rser list 1m/33/90/330/1k): matched ngspice to
+*   3 significant figures - 85.5 / 41.7 / 22.2 / 7.5 / 2.7 mA.
+* ngspice reference for this version: Ipk 85.5 / 20.5 / 11.7 / 5.9 mA for Rser
+*   1m / 100 / 200 / 430 (100 alone is just over the 20 mA limit). t_wake 0.2-3 ms
+*   with 10 uF, 7-110 ms with 330 uF: a big bulk cap only delays the wake-up, and
+*   the rail still ends at 1.9-2.9 V. No series R prevents it.
+* Next step: 2_spi_lines_6_backpower_tristate.cir tests the fix.
 * Checked in ngspice by expanding .step; not yet opened in LTSpice.
 .model Dclamp D(Is=1e-12 Rs=1)
 Vcs cs 0 3.3
@@ -22,12 +32,14 @@ Rs a pin {Rser}
 Cpin pin 0 8p
 Vsense pin pd 0
 Dup pd vccw Dclamp
-Cw1 vccw 0 10u
+Cw1 vccw 0 {Cbulk}
 Cw2 vccw 0 100n
 Rload vccw 0 {Rload}
-.step param Rser list 1m 33 90 330 1k
+.step param Rser list 1m 100 200 430
 .step param Rload list 3.3k 330k
-.tran 10u 20m 0 1u uic
+.step param Cbulk list 10u 330u
+.tran 10u 200m 0 1u uic
 .meas TRAN Ipk MAX I(Vsense)
-.meas TRAN Vend FIND V(vccw) AT=19m
+.meas TRAN Vend FIND V(vccw) AT=199m
+.meas TRAN t_wake WHEN V(vccw)=1.35 RISE=1
 .end

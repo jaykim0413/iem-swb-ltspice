@@ -1,0 +1,103 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\2_spi_lines\4_cs_backpower\2_spi_lines_4_cs_backpower.cir
+Start Time: Mon Sep 28 23:07:09 2026
+
+.step rser=0.001 rload=3300 cbulk=1e-05
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Per .tran options, skipping operating point for transient analysis.
+
+.step rser=100 rload=3300 cbulk=1e-05
+
+.step rser=200 rload=3300 cbulk=1e-05
+
+.step rser=430 rload=3300 cbulk=1e-05
+
+.step rser=0.001 rload=330000 cbulk=1e-05
+
+.step rser=100 rload=330000 cbulk=1e-05
+
+.step rser=200 rload=330000 cbulk=1e-05
+
+.step rser=430 rload=330000 cbulk=1e-05
+
+.step rser=0.001 rload=3300 cbulk=0.00033
+
+.step rser=100 rload=3300 cbulk=0.00033
+
+.step rser=200 rload=3300 cbulk=0.00033
+
+.step rser=430 rload=3300 cbulk=0.00033
+
+.step rser=0.001 rload=330000 cbulk=0.00033
+
+.step rser=100 rload=330000 cbulk=0.00033
+
+.step rser=200 rload=330000 cbulk=0.00033
+
+.step rser=430 rload=330000 cbulk=0.00033
+Total elapsed time: 32.912 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\2_spi_lines\4_cs_backpower\2_spi_lines_4_cs_backpower.cir
+
+
+Measurement: ipk
+  step	MAX(I(Vsense))	FROM	TO
+     1	0.0854767337441	0	0.2
+     2	0.0205170009285	0	0.2
+     3	0.0116928433999	0	0.2
+     4	0.00589717924595	0	0.2
+     5	0.0854767337441	0	0.2
+     6	0.0205170009285	0	0.2
+     7	0.0116928433999	0	0.2
+     8	0.00589717924595	0	0.2
+     9	0.0854763239622	0	0.2
+    10	0.0205180440098	0	0.2
+    11	0.0116928676143	0	0.2
+    12	0.00589710893109	0	0.2
+    13	0.0854763239622	0	0.2
+    14	0.0205180440098	0	0.2
+    15	0.0116928676143	0	0.2
+    16	0.00589710893109	0	0.2
+
+Measurement: vend
+  step	V(vccw) 	at
+     1	2.74300694466	0.199
+     2	2.66378903389	0.199
+     3	2.58903694153	0.199
+     4	2.43212604523	0.199
+     5	2.88626217842	0.199
+     6	2.88537240028	0.199
+     7	2.8844742775	0.199
+     8	2.88236045837	0.199
+     9	2.74298000336	0.199
+    10	2.62713412473	0.199
+    11	2.40433265647	0.199
+    12	1.8604193428	0.199
+    13	2.82965252923	0.199
+    14	2.74293683683	0.199
+    15	2.54250799128	0.199
+    16	1.99628092037	0.199
+
+Measurement: t_wake
+  step	V(vccw)=1.35 
+     1	0.000222841307476
+     2	0.000935743837804
+     3	0.00166000500563
+     4	0.00339088305201
+     5	0.000221899486603
+     6	0.000919347812218
+     7	0.00160890446922
+     8	0.00318205673353
+     9	0.00728314986736
+    10	0.0305830446991
+    11	0.0542541668461
+    12	0.110824702409
+    13	0.00725236950599
+    14	0.0300471710123
+    15	0.0525840455128
+    16	0.10399959276
