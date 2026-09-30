@@ -1,0 +1,56 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\1_wheel_supply\2_hotplug_bounce\1_wheel_supply_2_hotplug_bounce.cir
+Start Time: Wed Sep 30 01:31:59 2026
+
+.step lhar=1e-06 rhar=0.05
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Per .tran options, skipping operating point for transient analysis.
+
+.step lhar=2e-06 rhar=0.05
+
+.step lhar=5e-06 rhar=0.05
+
+.step lhar=1e-06 rhar=0.1
+
+.step lhar=2e-06 rhar=0.1
+
+.step lhar=5e-06 rhar=0.1
+
+.step lhar=1e-06 rhar=0.3
+
+.step lhar=2e-06 rhar=0.3
+
+.step lhar=5e-06 rhar=0.3
+Total elapsed time: 13.215 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\1_wheel_supply\2_hotplug_bounce\1_wheel_supply_2_hotplug_bounce.cir
+
+
+Measurement: vpk
+  step	MAX(V(c))	FROM	TO
+     1	5.66932868958	0	0.005
+     2	5.91139268875	0	0.005
+     3	6.14455604553	0	0.005
+     4	5.13065719604	0	0.005
+     5	5.48226165771	0	0.005
+     6	5.84202766418	0	0.005
+     7	3.83168578148	0	0.005
+     8	4.29931163788	0	0.005
+     9	4.89713287354	0	0.005
+
+Measurement: ipk
+  step	MAX(I(Lh))	FROM	TO
+     1	8.98766422272	0	0.005
+     2	6.63645219803	0	0.005
+     3	4.36739253998	0	0.005
+     4	8.08959197998	0	0.005
+     5	6.13828039169	0	0.005
+     6	4.14784288406	0	0.005
+     7	5.71924543381	0	0.005
+     8	4.68830776215	0	0.005
+     9	3.44132184982	0	0.005
