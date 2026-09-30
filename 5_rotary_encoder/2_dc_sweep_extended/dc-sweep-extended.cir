@@ -1,0 +1,10 @@
+* SWB rotary line - contact-resistance sweep at three pull-up corners
+V1 VCC 0 3.3
+R1 VCC IN {Rpu}
+Vsweep ctl 0 0
+Rc IN 0 R={V(ctl)}
+.step param Rpu list 4.99k 2.0k 1.65k
+.dc Vsweep 1m 200k 100
+.meas DC I_wet    FIND I(R1) AT=1m
+.meas DC R_margin FIND V(ctl) WHEN V(IN)=0.99
+.end

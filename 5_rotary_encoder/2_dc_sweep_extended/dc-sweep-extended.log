@@ -1,0 +1,28 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\5_rotary_encoder\dc-sweep-extended\dc-sweep-extended.cir
+Start Time: Wed Sep 30 01:28:15 2026
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+.step rpu=4990
+.step rpu=2000
+.step rpu=1650
+Total elapsed time: 1.018 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\5_rotary_encoder\dc-sweep-extended\dc-sweep-extended.cir
+
+
+Measurement: i_wet
+  step	I(R1) 	at
+     1	0.000661322497763	0.001
+     2	0.00164999917615	0.001
+     3	0.00199999869801	0.001
+
+Measurement: r_margin
+  step	V(ctl) 	at
+     1	2137.40010911	2137.40013255
+     2	858.000002716	858.000026153
+     3	707.424174616	707.424198053
