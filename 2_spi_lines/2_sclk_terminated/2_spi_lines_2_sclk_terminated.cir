@@ -4,13 +4,22 @@
 * roughly equal Z0. Z0 is unmeasured, so it is stepped across its likely range
 * at the longest harness delay (15 ns, ~3 m).
 * Record per step: Vmax/Vmin at both chips; look at the edge shape on the plot.
-* Pass: edge monotonic through 0.99-2.31 V at both chips, within -0.5 to 6.5 V.
+* Pass: within -0.5 to 6.5 V at both chips, AND plateau_chip2 above 2.31 V.
 *   Pick the Rser that passes across all Z0 values, not just the nominal one.
+* Why plateau_chip2: if Rout + Rser is larger than Z0 (over-terminated), the
+*   edge arrives as a staircase. Its first step can stall inside the undefined
+*   0.99-2.31 V band for one round trip (2 x Td = 30 ns) before the reflection
+*   lifts it. plateau_chip2 is the lowest level during that first step. The
+*   window 22-44 ns assumes Td = 15n; move it if you change Td.
 * Note: Rser here is the Dash-end resistor. Step 5 adds the wheel-end resistor
 *   that step 4 (back-power) asks for; choose the two together.
-* ngspice reference (2026-09-28): 120 Ohm passes at all three Z0; 90 Ohm marginal at
-*   Z0=150 (-0.45 V); 50 Ohm fails at Z0>=120. Err toward the high end of Z0.
-* Checked in ngspice by expanding .step; not yet opened in LTSpice.
+* ngspice reference (corrected 2026-09-29): 50 Ohm fails at Z0>=120 (-0.83 / -1.28 V).
+*   90 Ohm: -0.45 V at Z0=150 (only 50 mV of margin). 120 Ohm: no undershoot, but
+*   plateau 2.28 V at Z0=80 - stalls in the threshold band. 100 Ohm balances both:
+*   -0.29 V worst undershoot, 2.50 V lowest plateau. Measuring the harness Z0
+*   settles it: use Rser = Z0 - Rout.
+* Checked in ngspice by expanding .step. LTSpice 26.0.2 run 2026-09-28 completed
+*   (earlier version, without 100 Ohm and plateau_chip2): matched ngspice within 0.5 %.
 .param F=1Meg
 .param Tr=1n
 .param Rout=30
@@ -22,11 +31,12 @@ T1 b 0 c 0 Z0={Z0} Td={Td}
 Cpin1 c 0 8p
 Lstub c d 5n
 Cpin2 d 0 8p
-.step param Rser list 50 90 120
+.step param Rser list 50 90 100 120
 .step param Z0 list 80 120 150
 .tran 1n {5/F} 0 {Tr/10}
 .meas TRAN Vmax_chip1 MAX V(c)
 .meas TRAN Vmin_chip1 MIN V(c)
 .meas TRAN Vmax_chip2 MAX V(d)
 .meas TRAN Vmin_chip2 MIN V(d)
+.meas TRAN plateau_chip2 MIN V(d) FROM=22n TO=44n
 .end

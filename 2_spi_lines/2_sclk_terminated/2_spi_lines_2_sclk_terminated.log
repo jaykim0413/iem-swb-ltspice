@@ -1,0 +1,124 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\2_spi_lines\2_sclk_terminated\2_spi_lines_2_sclk_terminated.cir
+Start Time: Mon Sep 28 22:37:13 2026
+
+.step rser=50 z0=80
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+.OP point found by inspection.
+
+.step rser=90 z0=80
+.OP point found by inspection.
+
+.step rser=100 z0=80
+.OP point found by inspection.
+
+.step rser=120 z0=80
+.OP point found by inspection.
+
+.step rser=50 z0=120
+.OP point found by inspection.
+
+.step rser=90 z0=120
+.OP point found by inspection.
+
+.step rser=100 z0=120
+.OP point found by inspection.
+
+.step rser=120 z0=120
+.OP point found by inspection.
+
+.step rser=50 z0=150
+.OP point found by inspection.
+
+.step rser=90 z0=150
+.OP point found by inspection.
+
+.step rser=100 z0=150
+.OP point found by inspection.
+
+.step rser=120 z0=150
+.OP point found by inspection.
+Total elapsed time: 6.554 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\2_spi_lines\2_sclk_terminated\2_spi_lines_2_sclk_terminated.cir
+
+
+Measurement: vmax_chip1
+  step	MAX(V(c))	FROM	TO
+     1	3.30007171631	0	5e-06
+     2	3.29999995232	0	5e-06
+     3	3.29999995232	0	5e-06
+     4	3.29999995232	0	5e-06
+     5	4.1167974472	0	5e-06
+     6	3.30002331734	0	5e-06
+     7	3.29999995232	0	5e-06
+     8	3.29999995232	0	5e-06
+     9	4.57123708725	0	5e-06
+    10	3.75069022179	0	5e-06
+    11	3.5879907608	0	5e-06
+    12	3.3000099659	0	5e-06
+
+Measurement: vmin_chip1
+  step	MIN(V(c))	FROM	TO
+     1	-0.000100965866295	0	5e-06
+     2	0	0	5e-06
+     3	0	0	5e-06
+     4	0	0	5e-06
+     5	-0.81644308567	0	5e-06
+     6	-2.33668688452e-05	0	5e-06
+     7	0	0	5e-06
+     8	0	0	5e-06
+     9	-1.27377212048	0	5e-06
+    10	-0.450573533773	0	5e-06
+    11	-0.287620007992	0	5e-06
+    12	-1.0549979379e-05	0	5e-06
+
+Measurement: vmax_chip2
+  step	MAX(V(d))	FROM	TO
+     1	3.30007410049	0	5e-06
+     2	3.29999995232	0	5e-06
+     3	3.29999995232	0	5e-06
+     4	3.29999995232	0	5e-06
+     5	4.12935209274	0	5e-06
+     6	3.30002355576	0	5e-06
+     7	3.29999995232	0	5e-06
+     8	3.29999995232	0	5e-06
+     9	4.57931470871	0	5e-06
+    10	3.75254821777	0	5e-06
+    11	3.58873438835	0	5e-06
+    12	3.30001020432	0	5e-06
+
+Measurement: vmin_chip2
+  step	MIN(V(d))	FROM	TO
+     1	-0.000106840583612	0	5e-06
+     2	0	0	5e-06
+     3	0	0	5e-06
+     4	0	0	5e-06
+     5	-0.82736158371	0	5e-06
+     6	-2.40699409915e-05	0	5e-06
+     7	0	0	5e-06
+     8	0	0	5e-06
+     9	-1.28485786915	0	5e-06
+    10	-0.45393538475	0	5e-06
+    11	-0.289639681578	0	5e-06
+    12	-1.06960842459e-05	0	5e-06
+
+Measurement: plateau_chip2
+  step	MIN(V(d) )	FROM	TO
+     1	3.28112131037	2.2e-08	4.4e-08
+     2	2.62490767223	2.2e-08	4.4e-08
+     3	2.49991207341	2.2e-08	4.4e-08
+     4	2.28252840225	2.2e-08	4.4e-08
+     5	3.82755623094	2.2e-08	4.4e-08
+     6	3.18963019272	2.2e-08	4.4e-08
+     7	3.06204500878	2.2e-08	4.4e-08
+     8	2.83522686978	2.2e-08	4.4e-08
+     9	4.0183789393	2.2e-08	4.4e-08
+    10	3.42306359576	2.2e-08	4.4e-08
+    11	3.30081137692	2.2e-08	4.4e-08
+    12	3.08075726825	2.2e-08	4.4e-08
