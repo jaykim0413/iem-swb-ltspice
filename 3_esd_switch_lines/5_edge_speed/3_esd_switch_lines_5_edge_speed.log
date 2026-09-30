@@ -1,0 +1,79 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\3_esd_switch_lines\5_edge_speed\3_esd_switch_lines_5_edge_speed.cir
+Start Time: Tue Sep 29 00:04:39 2026
+
+.step rpu=70000 rser=0.001 ctvs=1e-15
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration succeeded in finding operating point.
+
+.step rpu=140000 rser=0.001 ctvs=1e-15
+Direct Newton iteration succeeded in finding operating point.
+
+.step rpu=70000 rser=1000 ctvs=1e-15
+Direct Newton iteration succeeded in finding operating point.
+
+.step rpu=140000 rser=1000 ctvs=1e-15
+Direct Newton iteration succeeded in finding operating point.
+
+.step rpu=70000 rser=0.001 ctvs=1e-11
+Direct Newton iteration succeeded in finding operating point.
+
+.step rpu=140000 rser=0.001 ctvs=1e-11
+Direct Newton iteration succeeded in finding operating point.
+
+.step rpu=70000 rser=1000 ctvs=1e-11
+Direct Newton iteration succeeded in finding operating point.
+
+.step rpu=140000 rser=1000 ctvs=1e-11
+Direct Newton iteration succeeded in finding operating point.
+
+.step rpu=70000 rser=0.001 ctvs=5e-11
+Direct Newton iteration succeeded in finding operating point.
+
+.step rpu=140000 rser=0.001 ctvs=5e-11
+Direct Newton iteration succeeded in finding operating point.
+
+.step rpu=70000 rser=1000 ctvs=5e-11
+Direct Newton iteration succeeded in finding operating point.
+
+.step rpu=140000 rser=1000 ctvs=5e-11
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 8.223 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\3_esd_switch_lines\5_edge_speed\3_esd_switch_lines_5_edge_speed.cir
+
+
+Measurement: t_fall
+  step	t_fall	FROM	TO
+     1	2.47884107204e-10	1.00054887668e-05	1.00057366509e-05
+     2	2.47901285217e-10	1.00054887363e-05	1.00057366376e-05
+     3	7.3085775364e-09	1.00087793892e-05	1.00160879667e-05
+     4	7.23502938247e-09	1.00087739854e-05	1.00160090148e-05
+     5	2.48684105006e-10	1.00054893666e-05	1.00057380507e-05
+     6	2.48701338998e-10	1.0005489336e-05	1.00057380374e-05
+     7	7.30514760519e-09	1.0008659126e-05	1.00159642736e-05
+     8	7.24680073804e-09	1.00086543931e-05	1.00159011938e-05
+     9	2.51884415994e-10	1.00054917663e-05	1.00057436507e-05
+    10	2.51901874002e-10	1.00054917353e-05	1.00057436372e-05
+    11	7.36385491739e-09	1.00086633425e-05	1.00160271974e-05
+    12	7.30002937528e-09	1.00086582457e-05	1.00159582751e-05
+
+Measurement: t_rise
+  step	t_rise	FROM	TO
+     1	5.04245131973e-07	6.02278604074e-05	6.07321055394e-05
+     2	1.00857947362e-06	6.04401154619e-05	6.14486949355e-05
+     3	5.04244691185e-07	6.02196954004e-05	6.07239400916e-05
+     4	1.00857972985e-06	6.04320024452e-05	6.1440582175e-05
+     5	1.09734594332e-06	6.047656201e-05	6.15739079533e-05
+     6	2.19488526721e-06	6.09384866854e-05	6.31333719526e-05
+     7	1.10194223295e-06	6.04655828891e-05	6.15675251221e-05
+     8	2.19947233418e-06	6.09274715307e-05	6.31269438649e-05
+     9	3.46998820248e-06	6.14764007862e-05	6.49463889887e-05
+    10	6.94058326177e-06	6.29370454033e-05	6.9877628665e-05
+    11	3.50626039642e-06	6.14395396434e-05	6.49458000398e-05
+    12	6.97682445405e-06	6.29003018889e-05	6.98771263429e-05
