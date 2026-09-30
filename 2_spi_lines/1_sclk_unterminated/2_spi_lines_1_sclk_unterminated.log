@@ -1,0 +1,46 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\2_spi_lines\1_sclk_unterminated\2_spi_lines_1_sclk_unterminated.cir
+Start Time: Mon Sep 28 21:14:48 2026
+
+.step td=5e-09
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+.OP point found by inspection.
+
+.step td=1e-08
+.OP point found by inspection.
+
+.step td=1.5e-08
+.OP point found by inspection.
+Total elapsed time: 2.195 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\2_spi_lines\1_sclk_unterminated\2_spi_lines_1_sclk_unterminated.cir
+
+
+Measurement: vmax_chip1
+  step	MAX(V(c))	FROM	TO
+     1	5.88289737701	0	5e-06
+     2	5.89188575745	0	5e-06
+     3	5.90108013153	0	5e-06
+
+Measurement: vmin_chip1
+  step	MIN(V(c))	FROM	TO
+     1	-2.57375216484	0	5e-06
+     2	-2.59869265556	0	5e-06
+     3	-2.59529924393	0	5e-06
+
+Measurement: vmax_chip2
+  step	MAX(V(d))	FROM	TO
+     1	5.94049787521	0	5e-06
+     2	5.95620155334	0	5e-06
+     3	5.95078277588	0	5e-06
+
+Measurement: vmin_chip2
+  step	MIN(V(d))	FROM	TO
+     1	-2.64356684685	0	5e-06
+     2	-2.66316080093	0	5e-06
+     3	-2.65485405922	0	5e-06
