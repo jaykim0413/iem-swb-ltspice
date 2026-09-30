@@ -1,0 +1,23 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\LED_MOSFET\pMOS_Button_LED.net
+Start Time: Wed Sep 30 12:54:46 2026
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration succeeded in finding operating point.
+Warning: Simulation tolerance relaxed to achieve convergence from 5.0065909091108522e-02 to 5.0065909091108619e-02 seconds.
+Warning: Simulation tolerance relaxed to achieve convergence from 5.0135909091170633e-02 to 5.0135909091170730e-02 seconds.
+Total elapsed time: 0.190 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\LED_MOSFET\pMOS_Button_LED.net
+C:\Users\jaykim\AppData\Local\LTspice\lib\cmp\standard.dio
+C:\Users\jaykim\AppData\Local\LTspice\lib\cmp\standard.mos
+
+i_pressed: AVG(I(D1) )=0.00298964860849 FROM 0.005 TO 0.045
+i_released: AVG(I(D1) )=4.76927831653e-12 FROM 0.06 TO 0.095
+v_in_pressed: AVG(V(IN) )=3.29999670612e-06 FROM 0.005 TO 0.045
+t_press: V(press)=1.65  AT 0.00102500000004
+t_led_on: I(D1)=1m  AT 0.00102651515186
