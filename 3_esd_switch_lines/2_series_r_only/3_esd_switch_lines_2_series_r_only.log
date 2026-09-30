@@ -1,0 +1,64 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\3_esd_switch_lines\2_series_r_only\3_esd_switch_lines_2_series_r_only.cir
+Start Time: Mon Sep 28 23:55:31 2026
+
+.step rser=100 vesd=8000
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Per .tran options, skipping operating point for transient analysis.
+
+.step rser=1000 vesd=8000
+
+.step rser=100 vesd=-8000
+
+.step rser=1000 vesd=-8000
+Total elapsed time: 0.387 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\3_esd_switch_lines\2_series_r_only\3_esd_switch_lines_2_series_r_only.cir
+
+
+Measurement: vpin_max
+  step	MAX(V(pin))	FROM	TO
+     1	26.7781829834	0	1e-07
+     2	14.2270183563	0	1e-07
+     3	3.29999995232	0	1e-07
+     4	3.29999995232	0	1e-07
+
+Measurement: vpin_min
+  step	MIN(V(pin))	FROM	TO
+     1	0	0	1e-07
+     2	0	0	1e-07
+     3	-10.0573854446	0	1e-07
+     4	-3.74872112274	0	1e-07
+
+Measurement: iint_max
+  step	MAX(I(Vsu))	FROM	TO
+     1	18.5240135193	0	1e-07
+     2	6.00199747086	0	1e-07
+     3	5.45696821064e-12	0	1e-07
+     4	5.45696821064e-12	0	1e-07
+
+Measurement: idn_max
+  step	MAX(I(Vsd))	FROM	TO
+     1	0	0	1e-07
+     2	0	0	1e-07
+     3	9.28507232666	0	1e-07
+     4	3.00558161736	0	1e-07
+
+Measurement: vr_max
+  step	MAX(V(vr))	FROM	TO
+     1	1859.54260254	0	1e-07
+     2	6012.01660156	0	1e-07
+     3	0	0	1e-07
+     4	0	0	1e-07
+
+Measurement: vr_min
+  step	MIN(V(vr))	FROM	TO
+     1	0	0	1e-07
+     2	0	0	1e-07
+     3	-1859.45654297	0	1e-07
+     4	-6014.92236328	0	1e-07
