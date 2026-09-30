@@ -1,0 +1,36 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\2_spi_lines\6_backpower_tristate\2_spi_lines_6_backpower_tristate.cir
+Start Time: Mon Sep 28 23:12:56 2026
+
+.step rb=22000
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Per .tran options, skipping operating point for transient analysis.
+
+.step rb=47000
+
+.step rb=100000
+
+.step rb=1000000000
+Total elapsed time: 1924.566 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\2_spi_lines\6_backpower_tristate\2_spi_lines_6_backpower_tristate.cir
+
+
+Measurement: vrail_end
+  step	V(vccw) 	at
+     1	0.39766946435	1.99
+     2	0.739242911339	1.99
+     3	1.17305493355	1.99
+     4	2.14755702019	1.99
+
+Measurement: vrail_max
+  step	MAX(V(vccw))	FROM	TO
+     1	0.475607782602	0	2
+     2	0.804765701294	0	2
+     3	1.22222387791	0	2
+     4	2.15221166611	0	2

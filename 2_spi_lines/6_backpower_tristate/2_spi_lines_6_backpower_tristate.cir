@@ -1,0 +1,46 @@
+* Test 2 SPI lines - Step 6 back-power with the fix: tri-stated SPI plus a bleed resistor
+* Plan: ltspice-testing/spi_bus_integrity_test_plan.md step 4a (mitigation)
+* Step 4 showed that a Dash holding CS high back-powers an unmated wheel through
+* the chip's input clamp, and no series resistor prevents it. Proposed fix: the
+* Dash tri-states SPI between polls. CS is then only ever driven LOW (during a
+* transaction), so it cannot inject. SCLK and MOSI still go high during each
+* poll's ~100 us burst, and those short pulses can still pump the rail.
+* Model: wheel 3.3 V pin unmated. SCLK and MOSI each carry a 1 MHz burst for
+*   100 us every 50 ms (20 Hz poll), hi-Z otherwise. MOSI is modelled as a clock
+*   too, which is pessimistic (real data is high only some of the time).
+*   Series R = 230 Ohm per line (100 Ohm Dash + 100 Ohm wheel + 30 Ohm driver).
+*   Chip load = 1.8 MOhm (2 uA standby at 3.6 V). Rbleed = resistor across the
+*   wheel 3.3 V rail, the proposed hardware half of the fix.
+* Record per step: Vrail_end (settled wheel rail) and Vrail_max.
+* Pass: Vrail_max below 1.05 V (POR assert), so the chips are held in reset
+*   rather than half-powered. The run is 2 s; with no bleed the rail is still
+*   climbing at the end (time constant ~18 s).
+* ngspice reference (2026-09-29, 10 uF): no bleed -> 2.40 V after 3 s and still
+*   rising (FAIL: tri-state alone is NOT enough). 100k -> 1.19-1.24 V (FAIL,
+*   inside the POR band). 47k -> 0.73-0.80 V (PASS). 22k -> 0.40-0.48 V (PASS).
+*   A 47k bleed costs 70 uA in normal operation.
+* Slow to run: each step simulates 2 s with 1 MHz bursts. Expect minutes.
+* Dclamp is a GENERIC diode; TI does not publish the real clamp. Indicative only.
+.model Dclamp D(Is=1e-12 Rs=1)
+.param Rtot=230
+Vclk clk 0 PULSE(0 3.3 0 5n 5n 0.495u 1u)
+Vgate gate 0 PULSE(0 1 1m 1n 1n 100u 50m)
+Sg clk drv gate 0 SWg
+.model SWg SW(Ron=1 Roff=1G Vt=0.5 Vh=0)
+Rhz drv 0 1G
+* SCLK
+Rs1 drv p1 {Rtot}
+Vsn1 p1 q1 0
+D1 q1 vccw Dclamp
+* MOSI
+Rs2 drv p2 {Rtot}
+Vsn2 p2 q2 0
+D2 q2 vccw Dclamp
+Cw vccw 0 10u
+Rchip vccw 0 1.8Meg
+Rbleed vccw 0 {Rb}
+.step param Rb list 1G 100k 47k 22k
+.tran 1u 2 0 0.2u uic
+.meas TRAN Vrail_end FIND V(vccw) AT=1.99
+.meas TRAN Vrail_max MAX V(vccw)
+.end
