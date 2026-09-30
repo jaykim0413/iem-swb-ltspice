@@ -1,0 +1,17 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\5_rotary_encoder\shared-return\shared-return.cir
+Start Time: Wed Sep 30 01:30:17 2026
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Total elapsed time: 0.372 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\5_rotary_encoder\shared-return\shared-return.cir
+
+r_shared_fail: V(ctl) =14988.3182986 at 14988.3183221
+v_open_at_fail: V(A1) =3.29983830452 at 14988.3183221
+v_knob2_at_fail: V(B7) =0.99 at 14988.3183221
+i_total: I(V1) =-9.43580380408e-05 at 0.001
