@@ -1,0 +1,53 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\4_wheel_short\2_recovery\4_wheel_short_2_recovery.cir
+Start Time: Wed Sep 30 01:23:50 2026
+
+.step ilim=0.25 cbulk=1e-05
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Per .tran options, skipping operating point for transient analysis.
+
+.step ilim=0.5 cbulk=1e-05
+
+.step ilim=1 cbulk=1e-05
+
+.step ilim=0.25 cbulk=0.00033
+
+.step ilim=0.5 cbulk=0.00033
+
+.step ilim=1 cbulk=0.00033
+Total elapsed time: 16.450 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\4_wheel_short\2_recovery\4_wheel_short_2_recovery.cir
+
+
+Measurement: vrec_max
+  step	MAX(V(c) )	FROM	TO
+     1	3.37321543694	0.03	0.05
+     2	3.45318007469	0.03	0.05
+     3	3.61246085167	0.03	0.05
+     4	3.29447722435	0.03	0.05
+     5	3.29447722435	0.03	0.05
+     6	3.29447722435	0.03	0.05
+
+Measurement: t_rec
+  step	V(c)=3.0 
+     1	0.0301220894326
+     2	0.0300615378616
+     3	0.0300313989294
+     4	0.0339805231702
+     5	0.0319825279841
+     6	0.0309880459346
+
+Measurement: vdash_min_rec
+  step	MIN(V(g) )	FROM	TO
+     1	3.28252625465	0.03	0.05
+     2	3.27004528046	0.03	0.05
+     3	3.24508309364	0.03	0.05
+     4	3.28252625465	0.03	0.05
+     5	3.27004528046	0.03	0.05
+     6	3.24508309364	0.03	0.05
