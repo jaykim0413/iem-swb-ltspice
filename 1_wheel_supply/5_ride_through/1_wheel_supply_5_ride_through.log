@@ -1,0 +1,48 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\1_wheel_supply\5_ride_through\1_wheel_supply_5_ride_through.cir
+Start Time: Wed Sep 30 11:17:13 2026
+
+.step ild=0.001 cbulk=1e-05 tdrop=0.0001
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration succeeded in finding operating point.
+
+.step ild=0.1 cbulk=1e-05 tdrop=0.0001
+Direct Newton iteration succeeded in finding operating point.
+
+.step ild=0.001 cbulk=0.00033 tdrop=0.0001
+Direct Newton iteration succeeded in finding operating point.
+
+.step ild=0.1 cbulk=0.00033 tdrop=0.0001
+Direct Newton iteration succeeded in finding operating point.
+
+.step ild=0.001 cbulk=1e-05 tdrop=0.001
+Direct Newton iteration succeeded in finding operating point.
+
+.step ild=0.1 cbulk=1e-05 tdrop=0.001
+Direct Newton iteration succeeded in finding operating point.
+
+.step ild=0.001 cbulk=0.00033 tdrop=0.001
+Direct Newton iteration succeeded in finding operating point.
+
+.step ild=0.1 cbulk=0.00033 tdrop=0.001
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 2.168 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\1_wheel_supply\5_ride_through\1_wheel_supply_5_ride_through.cir
+
+
+Measurement: vw_min
+  step	MIN(V(vw))	FROM	TO
+     1	3.28987956047	0	0.04
+     2	2.42745304108	0	0.04
+     3	3.2994427681	0	0.04
+     4	3.2448322773	0	0.04
+     5	3.20223283768	0	0.04
+     6	0.163079231977	0	0.04
+     7	3.29671788216	0	0.04
+     8	2.98755884171	0	0.04
