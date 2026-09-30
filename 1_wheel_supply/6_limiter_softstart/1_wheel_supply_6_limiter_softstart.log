@@ -1,0 +1,113 @@
+LTspice 26.0.2 for Windows
+Circuit: Z:\Desktop\my_dev\iem-ltspice\1_wheel_supply\6_limiter_softstart\1_wheel_supply_6_limiter_softstart.cir
+Start Time: Wed Sep 30 11:08:04 2026
+
+.step ilim=0.25 tau=1e-06 cbulk=1e-05
+solver = Normal
+Maximum thread count: 4
+tnom = 27
+temp = 27
+method = trap
+Per .tran options, skipping operating point for transient analysis.
+
+.step ilim=0.5 tau=1e-06 cbulk=1e-05
+
+.step ilim=1 tau=1e-06 cbulk=1e-05
+
+.step ilim=0.25 tau=1e-05 cbulk=1e-05
+
+.step ilim=0.5 tau=1e-05 cbulk=1e-05
+
+.step ilim=1 tau=1e-05 cbulk=1e-05
+
+.step ilim=0.25 tau=0.0001 cbulk=1e-05
+
+.step ilim=0.5 tau=0.0001 cbulk=1e-05
+
+.step ilim=1 tau=0.0001 cbulk=1e-05
+
+.step ilim=0.25 tau=1e-06 cbulk=0.00033
+
+.step ilim=0.5 tau=1e-06 cbulk=0.00033
+
+.step ilim=1 tau=1e-06 cbulk=0.00033
+
+.step ilim=0.25 tau=1e-05 cbulk=0.00033
+
+.step ilim=0.5 tau=1e-05 cbulk=0.00033
+
+.step ilim=1 tau=1e-05 cbulk=0.00033
+
+.step ilim=0.25 tau=0.0001 cbulk=0.00033
+
+.step ilim=0.5 tau=0.0001 cbulk=0.00033
+
+.step ilim=1 tau=0.0001 cbulk=0.00033
+Total elapsed time: 29.540 seconds.
+
+Files loaded:
+Z:\Desktop\my_dev\iem-ltspice\1_wheel_supply\6_limiter_softstart\1_wheel_supply_6_limiter_softstart.cir
+
+
+Measurement: vpk
+  step	MAX(V(c))	FROM	TO
+     1	3.45862865448	0	0.015
+     2	3.61956119537	0	0.015
+     3	3.94163584709	0	0.015
+     4	6.08146333694	0	0.015
+     5	6.08146333694	0	0.015
+     6	6.08146333694	0	0.015
+     7	6.08146333694	0	0.015
+     8	6.08146333694	0	0.015
+     9	6.08146333694	0	0.015
+    10	3.3162457943	0	0.015
+    11	3.33294653893	0	0.015
+    12	3.36634540558	0	0.015
+    13	3.3162457943	0	0.015
+    14	3.33294677734	0	0.015
+    15	3.36634659767	0	0.015
+    16	3.84366202354	0	0.015
+    17	3.87651848793	0	0.015
+    18	3.93888640404	0	0.015
+
+Measurement: ipk
+  step	MAX(I(Lh))	FROM	TO
+     1	1.69561469555	0	0.015
+     2	1.77598965168	0	0.015
+     3	1.93847227097	0	0.015
+     4	4.32180118561	0	0.015
+     5	4.32180118561	0	0.015
+     6	4.32180118561	0	0.015
+     7	4.32180118561	0	0.015
+     8	4.32180118561	0	0.015
+     9	4.32180118561	0	0.015
+    10	1.72521662712	0	0.015
+    11	1.8054908514	0	0.015
+    12	1.98738026619	0	0.015
+    13	6.76696491241	0	0.015
+    14	6.87724542618	0	0.015
+    15	7.10875844955	0	0.015
+    16	14.8820886612	0	0.015
+    17	15.0441169739	0	0.015
+    18	15.3664989471	0	0.015
+
+Measurement: t_up
+  step	V(c)=3.0 
+     1	0.00109443445422
+     2	0.00105035169292
+     3	0.00102809493424
+     4	0.00101080139802
+     5	0.00101080139802
+     6	0.00101080139802
+     7	0.00101080139802
+     8	0.00101080139802
+     9	0.00101080139802
+    10	0.00493335680185
+    11	0.00296548944397
+    12	0.00198520258262
+    13	0.00440333984755
+    14	0.00270790262081
+    15	0.00186399572204
+    16	0.0010959743116
+    17	0.00109393871824
+    18	0.00109036633475
